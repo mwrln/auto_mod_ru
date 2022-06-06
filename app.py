@@ -6,6 +6,13 @@ from sklearn.linear_model import LogisticRegression
 import string
 
 
+DEFAULT_COONFIG = {
+    "endpoint": "score",
+    "text_field": "text",
+    "model_path": "models/log_reg.joblib",
+    "vectorizer_path": "models/tfidf_vect.joblib"
+}
+
 def preprocess(text):
     return ''.join(c if c not in string.punctuation else f' {c} ' for c in text.lower() )
 
@@ -13,7 +20,7 @@ def preprocess(text):
 app = Flask(__name__)
 
 
-@app.get("/score")
+@app.get(f"/{DEFAULT_COONFIG['endpoint']}")
 def get_score():
     text = request.args.get("text")
     text_vec = vect.transform([preprocess(text)])
@@ -24,6 +31,6 @@ def get_score():
 
 
 if __name__ == '__main__':
-    clf = joblib.load("logreg_clf.joblib")
-    vect = joblib.load("count_vect.joblib")
+    clf = joblib.load(DEFAULT_CONFIG['model_path'])
+    vect = joblib.load(DEFAULT_CONFIG['vectorizer_path'])
     app.run(debug=True, host='0.0.0.0')
