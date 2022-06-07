@@ -1,0 +1,6 @@
+{
+    "endpoint": "score",
+    "text_field": "text",
+    "model_path": "models/catboost_500.joblib",
+    "vectorizer_path": "models/catboost_vectorizer.joblib"
+}
