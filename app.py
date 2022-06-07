@@ -1,28 +1,8 @@
 from flask import Flask, request, jsonify
 
 import joblib
-import json
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-import string
 import argparse
-
-
-DEFAULT_CONFIG = {
-    "endpoint": "score",
-    "text_field": "text",
-    "model_path": "models/log_reg.joblib",
-    "vectorizer_path": "models/tfidf_vect.joblib"
-}
-
-
-def preprocess(text):
-    return ''.join(c if c not in string.punctuation else f' {c} ' for c in text.lower() )
-
-
-def get_config(path):
-    with open(path, 'r') as f:
-        return json.load(f)
+from utils import preprocess, get_config
 
 
 app = Flask(__name__)
@@ -32,7 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--config_path', help='path to custom config', type=str, required=False)
     args = parser.parse_args()
-    DEFAULT_CONFIG = DEFAULT_CONFIG if not args.config_path else get_config(args.config_path)
+    DEFAULT_CONFIG = get_config("configs/default.json") if not args.config_path else get_config(args.config_path)
 
     @app.get(f"/{DEFAULT_CONFIG['endpoint']}")
     def get_score():

@@ -1,0 +1,6 @@
+{
+    "endpoint": "score",
+    "text_field": "text",
+    "model_path": "models/log_reg.joblib",
+    "vectorizer_path": "models/tfidf_vect.joblib"
+}
